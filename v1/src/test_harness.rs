@@ -13,7 +13,7 @@ pub struct AmmTestHarness {
 
 impl AmmTestHarness {
     pub fn new() -> Self {
-        let rpc_string = "https://api.mainnet-beta.solana.com".to_string(); // env::var("RPC_URL").unwrap();
+        let rpc_string = "https://api.devnet.solana.com".to_string(); // env::var("RPC_URL").unwrap();
         let rpc_url = rpc_string.as_str();
         Self {
             client: RpcClient::new(rpc_url),
