@@ -55,6 +55,18 @@ pub fn derive_user_amm_stats(user: &Pubkey, pool_id: &Pubkey) -> (Pubkey, u8) {
     )
 }
 
+pub fn derive_extras_account(creator: &Pubkey, base_mint: &Pubkey, quote_mint: &Pubkey) -> (Pubkey, u8) {
+    Pubkey::find_program_address(
+        &[
+            heaven_exchange::instructions::seeds::EXTRAS_ACCOUNT.as_bytes(),
+            creator.as_ref(),
+            base_mint.as_ref(),
+            quote_mint.as_ref(),
+        ],
+        &PROGRAM_ID,
+    )
+}
+
 impl Amm for HeavenAmm {
     fn label(&self) -> String {
         return String::from("Heaven");
@@ -268,6 +280,11 @@ impl Amm for HeavenAmm {
             },
             AccountMeta {
                 pubkey: chainlink_program::ID,
+                is_signer: false,
+                is_writable: false,
+            },
+            AccountMeta {
+                pubkey: derive_extras_account(&self.state.creator, &self.state.base_token_mint, &self.state.quote_token_mint).0,
                 is_signer: false,
                 is_writable: false,
             },
